@@ -6,6 +6,5 @@
             "use":"@vercel/node"
         }
     ],
-    "routes":"./routes/*",
-    "dest":"./index.js"
+    "routes":"./routes/*"
 }
