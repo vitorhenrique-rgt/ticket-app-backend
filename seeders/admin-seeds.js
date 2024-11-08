@@ -1,33 +1,36 @@
-const { User, Company, sequelize } = require("../models");
+const { User, Company } = require("../models");
 
-async function seedAdminUser() {
-  try {
-    // Sincroniza o banco de dados (não use force: true para não resetar tudo)
-    await sequelize.sync();
+module.exports = {
+  async up(queryInterface, Sequelize) {
+    try {
+      // Verifica se já existe uma empresa para associar
+      let company = await Company.findOne({
+        where: { name: "DefaultCompany" },
+      });
 
-    // Verifica se já existe uma empresa para associar
-    let company = await Company.findOne({ where: { name: "DefaultCompany" } });
+      // Cria uma empresa padrão se não existir
+      if (!company) {
+        company = await Company.create({ name: "DefaultCompany" });
+      }
 
-    // Cria uma empresa padrão se não existir
-    if (!company) {
-      company = await Company.create({ name: "DefaultCompany" });
+      // Cria um usuário admin com o nickname 'ticket'
+      await User.create({
+        name: "Admin",
+        nickname: "admin",
+        password: "admin",
+        isAdmin: true,
+        companyId: company.id,
+      });
+
+      console.log("Usuário admin criado com sucesso!");
+    } catch (error) {
+      console.error("Erro ao criar usuário admin:", error);
     }
+  },
 
-    // Cria um usuário admin com o nickname 'ticket'
-    await User.create({
-      name: "Admin",
-      nickname: "admin",
-      password: "admin",
-      isAdmin: true,
-      companyId: company.id,
-    });
-
-    console.log("Usuário admin criado com sucesso!");
-  } catch (error) {
-    console.error("Erro ao criar usuário admin:", error);
-  } finally {
-    await sequelize.close();
-  }
-}
-
-seedAdminUser();
+  async down(queryInterface, Sequelize) {
+    // Este método pode ser usado para reverter as seeds, caso necessário
+    await User.destroy({ where: { nickname: "admin" } });
+    await Company.destroy({ where: { name: "DefaultCompany" } });
+  },
+};
