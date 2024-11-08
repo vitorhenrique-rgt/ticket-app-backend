@@ -19,7 +19,7 @@ module.exports = {
 
       if (!adminExists) {
         // Criptografa a senha usando bcrypt
-        const hashedPassword = bcrypt.hash("admin", 10); // 10 é o número de salt rounds
+        const hashedPassword = await bcrypt.hash("admin", 10); // 10 é o número de salt rounds
 
         // Cria um usuário admin com a senha criptografada
         await User.create({
