@@ -7,18 +7,15 @@ const ticketRoutes = require("./routes/ticketRoutes");
 const tagRoutes = require("./routes/tagRoutes");
 const app = express();
 
-// Converter a string de origens em um array
-const allowedOrigins = process.env.CORS_ORIGINS.split(",");
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-};
-app.use(cors(corsOptions));
+app.use((req, res, next) => {
+  res.header(
+    "Configures the Access-Control-Allow-Origin",
+    process.env.CORS_ORIGINS
+  );
+  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+  app.use(cors());
+  next();
+});
 
 app.use(express.json());
 
