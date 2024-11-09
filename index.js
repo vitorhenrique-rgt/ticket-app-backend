@@ -6,7 +6,11 @@ const userRoutes = require("./routes/userRoutes");
 const ticketRoutes = require("./routes/ticketRoutes");
 const tagRoutes = require("./routes/tagRoutes");
 const app = express();
-app.use(cors(process.env.CORS));
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN,
+  })
+);
 app.use(express.json());
 
 app.use("/api", companyRoutes);
