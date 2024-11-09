@@ -8,10 +8,7 @@ const tagRoutes = require("./routes/tagRoutes");
 const app = express();
 
 app.use((req, res, next) => {
-  res.header(
-    "Configures the Access-Control-Allow-Origin",
-    process.env.CORS_ORIGINS
-  );
+  res.header("Access-Control-Allow-Origin", process.env.CORS_ORIGINS);
   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
   app.use(cors());
   next();
