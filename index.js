@@ -7,12 +7,11 @@ const ticketRoutes = require("./routes/ticketRoutes");
 const tagRoutes = require("./routes/tagRoutes");
 const app = express();
 
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", process.env.CORS_ORIGINS);
-  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
-  app.use(cors());
-  next();
-});
+const corsOptions = {
+  origin: process.env.CORS_ORIGIN,
+  methods: "GET,PUT,POST,DELETE",
+};
+app.use(cors(corsOptions));
 
 app.use(express.json());
 
