@@ -7,10 +7,19 @@ const ticketRoutes = require("./routes/ticketRoutes");
 const tagRoutes = require("./routes/tagRoutes");
 const app = express();
 
+const allowedOrigins = [process.env.CORS_ORIGIN];
+
 const corsOptions = {
-  origin: process.env.CORS_ORIGIN.trim(),
+  origin: (origin, callback) => {
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   methods: "GET,PUT,POST,DELETE",
 };
+
 app.use(cors(corsOptions));
 
 app.use(express.json());
