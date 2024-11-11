@@ -8,7 +8,7 @@ const tagRoutes = require("./routes/tagRoutes");
 const app = express();
 
 const corsOptions = {
-  origin: process.env.CORS_ORIGIN,
+  origin: process.env.CORS_ORIGIN.trim(),
   methods: "GET,PUT,POST,DELETE",
 };
 app.use(cors(corsOptions));
